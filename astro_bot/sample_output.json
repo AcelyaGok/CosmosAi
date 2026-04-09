@@ -1,0 +1,89 @@
+{
+  "birth_info": {
+    "date": "1995-06-15",
+    "time": "14:30",
+    "latitude": 41.0082,
+    "longitude": 28.9784,
+    "utc_offset": 3.0
+  },
+  "ascendant": "Terazi",
+  "asc_degree": 11.67,
+  "mc": "Yengeç",
+  "mc_degree": 13.59,
+  "houses": [
+    191.67,
+    218.57,
+    249.61,
+    283.59,
+    317.04,
+    346.75,
+    11.67,
+    38.57,
+    69.61,
+    103.59,
+    137.04,
+    166.75
+  ],
+  "planets": {
+    "sun": {
+      "longitude": 83.9123,
+      "sign": "Ýkizler",
+      "degree": 23.91,
+      "retrograde": false
+    },
+    "moon": {
+      "longitude": 296.6902,
+      "sign": "Oðlak",
+      "degree": 26.69,
+      "retrograde": false
+    },
+    "mercury": {
+      "longitude": 69.9342,
+      "sign": "Ýkizler",
+      "degree": 9.93,
+      "retrograde": true
+    },
+    "venus": {
+      "longitude": 65.841,
+      "sign": "Ýkizler",
+      "degree": 5.84,
+      "retrograde": false
+    },
+    "mars": {
+      "longitude": 160.0894,
+      "sign": "Baþak",
+      "degree": 10.09,
+      "retrograde": false
+    },
+    "jupiter": {
+      "longitude": 248.7698,
+      "sign": "Yay",
+      "degree": 8.77,
+      "retrograde": true
+    },
+    "saturn": {
+      "longitude": 354.3893,
+      "sign": "Balýk",
+      "degree": 24.39,
+      "retrograde": false
+    },
+    "uranus": {
+      "longitude": 299.8212,
+      "sign": "Oðlak",
+      "degree": 29.82,
+      "retrograde": true
+    },
+    "neptune": {
+      "longitude": 294.9672,
+      "sign": "Oðlak",
+      "degree": 24.97,
+      "retrograde": true
+    },
+    "pluto": {
+      "longitude": 238.5452,
+      "sign": "Akrep",
+      "degree": 28.55,
+      "retrograde": true
+    }
+  }
+}
