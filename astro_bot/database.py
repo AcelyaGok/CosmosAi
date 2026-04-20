@@ -1,4 +1,4 @@
-
+# Veritabanı bağlantı modülü
 import psycopg2
 from config import DATABASE_URL
 
