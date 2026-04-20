@@ -8,7 +8,7 @@
   },
   "ascendant": "Terazi",
   "asc_degree": 11.67,
-  "mc": "Yengeç",
+  "mc": "YengeÃ§",
   "mc_degree": 13.59,
   "houses": [
     191.67,
@@ -27,31 +27,31 @@
   "planets": {
     "sun": {
       "longitude": 83.9123,
-      "sign": "Ýkizler",
+      "sign": "Ä°kizler",
       "degree": 23.91,
       "retrograde": false
     },
     "moon": {
       "longitude": 296.6902,
-      "sign": "Oðlak",
+      "sign": "OÄŸlak",
       "degree": 26.69,
       "retrograde": false
     },
     "mercury": {
       "longitude": 69.9342,
-      "sign": "Ýkizler",
+      "sign": "Ä°kizler",
       "degree": 9.93,
       "retrograde": true
     },
     "venus": {
       "longitude": 65.841,
-      "sign": "Ýkizler",
+      "sign": "Ä°kizler",
       "degree": 5.84,
       "retrograde": false
     },
     "mars": {
       "longitude": 160.0894,
-      "sign": "Baþak",
+      "sign": "BaÅŸak",
       "degree": 10.09,
       "retrograde": false
     },
@@ -63,19 +63,19 @@
     },
     "saturn": {
       "longitude": 354.3893,
-      "sign": "Balýk",
+      "sign": "BalÄ±k",
       "degree": 24.39,
       "retrograde": false
     },
     "uranus": {
       "longitude": 299.8212,
-      "sign": "Oðlak",
+      "sign": "OÄŸlak",
       "degree": 29.82,
       "retrograde": true
     },
     "neptune": {
       "longitude": 294.9672,
-      "sign": "Oðlak",
+      "sign": "OÄŸlak",
       "degree": 24.97,
       "retrograde": true
     },
