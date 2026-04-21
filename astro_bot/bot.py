@@ -1,8 +1,8 @@
-from Telegram import update
+from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from config import TELEGRAM_TOKEN
 
-async def start(update : update , context : ContextTypes.DEFAULT_TYPE):
+async def start(update : Update , context : ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
 
