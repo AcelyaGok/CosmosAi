@@ -42,6 +42,43 @@ ASTRO_JSON:
         ]
     )
     return response.choices[0].message.content
+# ── GÖREV 22 ── Sadece burç adıyla günlük yorum ───────────────────────────────
+
+def get_daily_horoscope(sign: str) -> str:
+    """
+    Sadece burç adı geldiğinde çağrılır.
+    Doğum haritası olmadan sadece burç adına göre günlük yorum üretir.
+    Kullanıcı 'Günlük Yorum' butonuna bastığında kullanılır.
+    sign: 'Koç', 'Boğa', 'İkizler' gibi Türkçe burç adı
+    """
+    prompt = f"""
+Sen eğlenceli, samimi ve biraz da esprili bir astroloji uzmanısın.
+SADECE TÜRKÇE yaz, başka hiçbir dil kullanma.
+
+{sign} burcu için bugünkü günlük yorumu yaz.
+
+Kurallar:
+- Aşk, kariyer ve genel enerji hakkında kısaca değin
+- Esprili ve samimi ol, arkadaşına anlatır gibi yaz
+- Aşk konusunda duygusal ve anlayışlı ol
+- Kariyer konusunda pratik ve mantıklı ol
+- 4-5 cümle yaz
+- Pozitif bitir
+"""
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",#GROQ_MODEL
+        messages=[
+            {
+                "role": "system",
+                "content": "Sen Türkçe konuşan eğlenceli bir astroloji uzmanısın. Asla başka dil kullanma, sadece Türkçe yaz."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+    return response.choices[0].message.content
 
 
 if __name__ == "__main__":
