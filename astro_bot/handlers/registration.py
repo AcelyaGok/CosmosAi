@@ -1,4 +1,9 @@
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters
+from datetime import datetime
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from database import save_user, save_birth_profile
 
 BIRTH_DATE, BIRTH_TIME, BIRTH_PLACE = range(3)
 
@@ -25,26 +30,36 @@ async def get_birth_time(update, context):
 
 async def get_birth_place(update, context):
     context.user_data["birth_place"] = update.message.text
-    
     user_id = update.effective_user.id
-    
-    # Kişi 3'ün fonksiyonlarını çağır
+
+    # Tarih formatını DD.MM.YYYY'den YYYY-MM-DD'ye çevir
+    birth_date_str = context.user_data["birth_date"]
+    try:
+        birth_date = datetime.strptime(birth_date_str, "%d.%m.%Y").strftime("%Y-%m-%d")
+    except ValueError:
+        await update.message.reply_text(
+            "Tarih formatı yanlış! Lütfen GG.AA.YYYY formatında girin (örn: 15.03.1998):"
+        )
+        return BIRTH_DATE
+
+    birth_data = {
+        "birth_info": {
+            "date": birth_date,
+            "time": context.user_data["birth_time"],
+            "latitude": None,
+            "longitude": None
+        }
+    }
+
     save_user(user_id, update.effective_user.first_name)
-    save_birth_profile(
-        telegram_user_id=user_id,
-        birth_date=context.user_data["birth_date"],
-        birth_time=context.user_data["birth_time"],
-        birth_place_text=context.user_data["birth_place"]
-    )
-    
+    save_birth_profile(user_id, birth_data)
+
     await update.message.reply_text("✅ Bilgilerin kaydedildi! Artık yorum alabilirsin.")
     return ConversationHandler.END
 
 async def cancel(update, context):
     await update.message.reply_text("Kayıt iptal edildi.")
     return ConversationHandler.END
-
-from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters
 
 register_handler = ConversationHandler(
     entry_points=[CommandHandler("register", register_start)],
@@ -55,4 +70,6 @@ register_handler = ConversationHandler(
     },
     fallbacks=[CommandHandler("cancel", cancel)]
 )
+
+
 
