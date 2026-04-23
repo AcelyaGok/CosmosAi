@@ -4,6 +4,10 @@ from config import TELEGRAM_TOKEN
 from handlers.registration import register_handler
 from handlers.check_user import check_user
 
+# Botun yaptıgı her islemi terminale yazar. Hata ayıklamak icin gerekir.
+import logging
+logging.basicConfig(level=logging.INFO)
+
 def main():
     app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
     
