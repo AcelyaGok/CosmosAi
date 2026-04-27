@@ -65,12 +65,20 @@ def resolve_city(city_name: str, birth_date: str | None = None) -> dict:
 if __name__ == "__main__":
     # Hızlı test — bu modül doğrudan çalıştırıldığında çalışır
     test_cases = [
+    #Test verileri 
         ("İstanbul", "1995-06-15"),
         ("Ankara", "2000-01-01"),
         ("New York", "1990-12-25"),
 
+    #Türkiye'de yaz saati uygulması 2016'da kaldırıldı. Öncesi ve sonrası test verileri. 
         ("İstanbul", "2015-03-28"),
         ("İstanbul", "2016-09-08"),
+
+    #Hatalı girdiler
+     ("", "2000-01-01"),               
+    ("Xyzabc123", "2000-01-01"),      
+    ("İstanbul", "tarih-degil"),      
+    ("İstanbul", "1995-13-45"),       
     ]
 
     for city, date in test_cases:
