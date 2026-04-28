@@ -1,5 +1,5 @@
 import json
-from astro_calculator import calculate_natal_chart
+from astro_bot.astro_calculator import calculate_natal_chart
 
 result = calculate_natal_chart(
     year=1995, month=6, day=15,
