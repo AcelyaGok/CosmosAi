@@ -1,8 +1,8 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-from config import TELEGRAM_TOKEN
-from handlers.registration import register_handler
-from handlers.check_user import check_user
+from .config import TELEGRAM_TOKEN
+from .handlers.registration import register_handler
+from .handlers.check_user import check_user
 
 # Botun yaptıgı her islemi terminale yazar. Hata ayıklamak icin gerekir.
 import logging

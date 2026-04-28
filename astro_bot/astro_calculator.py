@@ -1,7 +1,7 @@
 # astro_calculator.py
 
 import swisseph as swe
-from ephemeris_utils import date_to_julian_day, longitude_to_sign, local_time_to_utc
+from .ephemeris_utils import date_to_julian_day, longitude_to_sign, local_time_to_utc
 
 swe.set_ephe_path(None)
 #Gezegen verilerini kütüphanenin kendi varsayılan yolunu kullanır.
