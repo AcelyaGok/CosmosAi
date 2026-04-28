@@ -1,9 +1,6 @@
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters
 from datetime import datetime
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from database import save_user, save_birth_profile
+from ..database import save_user, save_birth_profile
 
 # ConversationHandler'da kullanılacak state (adım) değerlerini tanımlıyoruz
 # range(3) → (0,1,2) üretir

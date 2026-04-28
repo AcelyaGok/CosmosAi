@@ -2,14 +2,11 @@ from telegram.ext import CommandHandler
 import sys
 import os
 # projedeki farklı klasörlerden dosya import edebilmek icin mevcut dosyanın bulunduğu klasörün bir üst dizinini Python path'ine ekler
-
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # InlineKeyboardButton → tek bir butonu temsil eder.
 # InlineKeyboardMarkup → butonları bir araya getirip mesaja eklenebilir hale getirir.
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 # get_user → kullanıcıyı veritabanından çeker
-from database import get_user
+from ..database import get_user
 
 # bu fonksiyon sayesinde bot birden fazla kullanıcıya yanit verebilir
 async def check_user(update, context):

@@ -1,7 +1,7 @@
 # Veritabanı bağlantı modülü
 import psycopg2
 import json
-from config import DATABASE_URL
+from .config import DATABASE_URL
 
 
 def get_connection():
