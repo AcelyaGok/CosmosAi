@@ -17,7 +17,7 @@ def longitude_to_sign(longitude: float) -> dict:
         "Aslan", "Başak", "Terazi", "Akrep",
         "Yay", "Oğlak", "Kova", "Balık"
     ]
-    sign_index = int(longitude // 30)
+    sign_index = int((longitude % 360) // 30)
     degree_in_sign = longitude % 30 #Verdiği kalan sayesinde burcun hang derecede olduğunu anlarız.
     return {
         "sign": signs[sign_index],
