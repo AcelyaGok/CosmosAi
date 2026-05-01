@@ -1,6 +1,7 @@
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters
 from datetime import datetime
 from ..database import save_user, save_birth_profile
+from ..location_utils import resolve_city
 
 # ConversationHandler'da kullanılacak state (adım) değerlerini tanımlıyoruz
 # range(3) → (0,1,2) üretir
@@ -26,21 +27,47 @@ async def get_birth_date(update, context):
     return BIRTH_TIME
 
 async def get_birth_time(update, context):
-    text = update.message.text
-    context.user_data["birth_time"] = None if "bilmiyorum" in text.lower() else text
+    text = update.message.text.strip()
+
+    # "Bilmiyorum" özel durumu — saat opsiyonel
+    if text.lower() in ["bilmiyorum", "bilmem", "yok"]:
+        context.user_data["birth_time"] = None
+        await update.message.reply_text(
+            "Doğum yerinizi girin (örn: Istanbul, Turkey):"
+        )
+        return BIRTH_PLACE
+
+    # HH:MM formatı validasyonu
+    try:
+        datetime.strptime(text, "%H:%M")
+    except ValueError:
+        await update.message.reply_text(
+            "Saat formatı yanlış! Lütfen SS:DD formatında girin "
+            "(örn: 14:30). Bilmiyorsanız 'bilmiyorum' yazın:"
+        )
+        return BIRTH_TIME  # aynı state'te kal, tekrar sor
+
+    # Format doğruysa kaydet ve devam et
+    context.user_data["birth_time"] = text
     await update.message.reply_text(
         "Doğum yerinizi girin (örn: Istanbul, Turkey):"
     )
     return BIRTH_PLACE
 
 async def get_birth_place(update, context):
-    context.user_data["birth_place"] = update.message.text
+    city_text = update.message.text.strip()
+    
+    # Boş şehir kontrolü
+    if not city_text:
+        await update.message.reply_text(
+            "Doğum yerinizi boş bırakamazsınız. Lütfen bir şehir girin (örn: Istanbul, Turkey):"
+        )
+        return BIRTH_PLACE
+    
     user_id = update.effective_user.id
-
-    # Tarih formatını DD.MM.YYYY'den YYYY-MM-DD'ye çevir
+    
+    # Tarih formatını dönüştür
     birth_date_str = context.user_data["birth_date"]
-    # "DD.MM.YYYY" → datetime objesine çeviriyoruz
-    # sonra "YYYY-MM-DD" formatına dönüştürüyoruz
     try:
         birth_date = datetime.strptime(birth_date_str, "%d.%m.%Y").strftime("%Y-%m-%d")
     except ValueError:
@@ -48,6 +75,52 @@ async def get_birth_place(update, context):
             "Tarih formatı yanlış! Lütfen GG.AA.YYYY formatında girin (örn: 15.03.1998):"
         )
         return BIRTH_DATE
+    
+    # Kullanıcıya bekleme mesajı (geocoding 2-5 saniye sürebilir)
+    await update.message.reply_text("🔍 Şehrinizi arıyorum, lütfen bekleyin...")
+    
+    # Geocoding: şehir → enlem/boylam/utc_offset
+    try:
+        location = resolve_city(city_text, birth_date)
+    except ValueError as e:
+        # Şehir bulunamadı veya tarih hatası
+        await update.message.reply_text(
+            f"❌ {str(e)}\n\nLütfen şehir adını tekrar girin (örn: Istanbul, Turkey):"
+        )
+        return BIRTH_PLACE
+    except RuntimeError as e:
+        # Geocoding servisine ulaşılamadı (internet sorunu vb.)
+        await update.message.reply_text(
+            "❌ Şu anda lokasyon servisi ile bağlantı kuramıyorum. "
+            "Lütfen birkaç saniye sonra tekrar deneyin."
+        )
+        return BIRTH_PLACE
+    
+    # Geocoding başarılı — birth_data'yı dolu olarak hazırla
+    birth_data = {
+        "birth_info": {
+            "date": birth_date,
+            "time": context.user_data["birth_time"],
+            "latitude": location["latitude"],
+            "longitude": location["longitude"],
+            "utc_offset": location["utc_offset"],
+            "timezone": location["timezone"],
+            "place_name": location["resolved_name"]
+        }
+    }
+    
+    # Veritabanına kaydetme
+    save_user(user_id, update.effective_user.first_name)
+    save_birth_profile(user_id, birth_data)
+    
+    # Kullanıcıya doğrulama mesajı
+    await update.message.reply_text(
+        f"✅ Bilgilerin kaydedildi!\n\n"
+        f"📍 Konum: {location['resolved_name']}\n"
+        f"🌍 Saat dilimi: {location['timezone']} (UTC{'+' if location['utc_offset'] >= 0 else ''}{location['utc_offset']})\n\n"
+        f"Artık yorum alabilirsin."
+    )
+    return ConversationHandler.END
     
     #Kaydedilecek veriyi hazırlama
     birth_data = {
